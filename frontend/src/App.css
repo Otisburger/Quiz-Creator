@@ -1,0 +1,218 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+body
+{
+    background-color:lightblue;
+    text-align: center;
+}
+
+h1
+{
+    color:darkslateblue;
+    text-align: center;
+}
+
+h2
+{
+    color:darkslateblue;
+    text-align: center;
+}
+
+.main
+{
+    width: max-content;
+    margin: 25px auto;
+    font-family: "Segoe UI", sans-serif;
+    padding: 15px 45px;
+    background:rgb(143, 131, 224);
+    border-radius: 4px;
+    border: 1px solid rgb(133, 143, 204);
+}
+
+.main h2
+{
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-weight: 400;
+    color: white;
+}
+
+.main h4
+{
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 20px;
+    font-weight: 400;
+    color: white;
+}
+
+.main label 
+{
+    display: block;
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: white;
+}
+
+p {
+    color: white;
+}
+
+#button 
+{
+    background:darkslateblue;
+    width: 95%;
+    color:oldlace;
+}
+
+#cancel
+{
+    background:oldlace;
+    width: 95%;
+    color: darkslateblue;
+}
+
+.main input 
+{
+    padding: 10px 20px;
+    font-size: 15px;
+    background: rgb(197, 190, 241);
+    width: 75%;
+    border: white;
+    border-radius: 4px;
+    color: darkslateblue;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.main select 
+{
+    padding: 10px 20px;
+    font-size: 15px;
+    background: rgb(197, 190, 241);
+    width: 88%;
+    border: white;
+    border-radius: 4px;
+    color: darkslateblue;
+    margin-top: 5px;
+    margin-bottom: 0px;
+}
+
+.main button 
+{
+    padding: 10px 20px;
+    font-size: 15px;
+    border: white;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    background:darkslateblue;
+    width: 95%;
+    color:oldlace;
+}
+
+.login 
+{
+    display: block;
+    margin-bottom: 10px;
+}
+
+.menu
+{
+    width: max-content;
+    margin: 10px auto;
+    font-family: "Segoe UI", sans-serif;
+    padding: 10px 300px;
+    background:rgb(143, 131, 224);
+    border-radius: 4px;
+    border: 1px solid rgb(133, 143, 204);
+}
+
+.menu input
+{
+    display: block;
+    padding: 65px 175px;
+    font-size: 25px;
+    border: white;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background:darkslateblue;
+    width: 100%;
+    color:oldlace;
+}
+
+.menu button
+{
+    display: block;
+    padding: 65px 175px;
+    font-size: 25px;
+    border: white;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background:darkslateblue;
+    width: 100%;
+    color:oldlace;
+}
+
+#fill
+{
+    width: 43%;
+}
+
+.menu h2
+{
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 20px;
+    font-weight: 400;
+    color: white;
+}
+
+input[type="submit"].the_button {
+    width: auto;
+    padding: 5px 10px;
+}
+
+.stupidButton input{
+    padding: 0;
+    width: auto;
+    margin-left: 5px;
+    margin-right: 5px;
+}
