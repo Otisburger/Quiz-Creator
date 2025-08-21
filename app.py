@@ -2,7 +2,9 @@ from flask import Flask
 from flask import request
 from flask import session
 from flask_sqlalchemy import SQLAlchemy
+from flask_session import Session
 from flask_cors import CORS
+
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -12,8 +14,13 @@ CORS(app, origins=["http://localhost:3000"], supports_credentials=True)
 
 app.config['SQLALCHEMY_DATABASE_URI']=os.getenv("SQLALCHEMY_DATABASE_URI")
 app.config['SECRET_KEY']=os.getenv("SECRET_KEY")
+app.config['SESSION_TYPE'] = 'sqlalchemy'
 
 db = SQLAlchemy(app)
+
+app.config['SESSION_SQLALCHEMY'] = db
+
+sess = Session(app)
 
 class User(db.Model):
 	__tablename__ = 'users'

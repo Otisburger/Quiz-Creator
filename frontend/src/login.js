@@ -27,8 +27,6 @@ export function Login(){
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		console.log(userValue);
-		console.log(passValue);
         const formData = { username: userValue, password: passValue };
         try {
         	const response = await axios.post(baseUrl+'/login', formData, { withCredentials: true });
