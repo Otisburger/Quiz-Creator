@@ -4,6 +4,7 @@ from flask import session
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from flask_cors import CORS
+import bcrypt
 
 import os
 from dotenv import load_dotenv
@@ -62,15 +63,18 @@ def login():
 def createUser():
 	# adds another user to the database
 	data = request.get_json()
+	salt = bcrypt.gensalt()
 	username = data.get('username')
-	password = data.get('password')
+	password = (data.get('password')).encode("utf-8")
+	hashedPassword = bcrypt.hashpw(password, salt)
 	if (username != '' and password != ''):
 		try:
-			newUser = User(username=username, password=password)
+			newUser = User(username=username, password=hashedPassword.decode('utf-8'))
 			db.session.add(newUser)
 			db.session.commit()
 			return {'status':'ok'}
-		except:
+		except Exception as e:
+			print(e)
 			return {'status':'error','message':'A user with that username already exists.'}
 	else:
 		return {'status':'error','message':'One of the fields are blank.'}
@@ -339,7 +343,7 @@ def isValid(username, password):
 		user = User.query.filter_by(username=username).one()
 	else:
 		user = None
-	if (user is not None) and (user.password == password): # returns true if the information entered matches a user in the database
+	if (user is not None) and bcrypt.checkpw(password.encode("utf-8"), (user.password).encode("utf-8")): # returns true if the information entered matches a user in the database
 		return True
 	else:
 		return False

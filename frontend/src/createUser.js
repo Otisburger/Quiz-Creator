@@ -47,7 +47,7 @@ export function CreateUser(){
 		    <h1>Quiz!</h1>
 		    	<div className = "main">
 			    	<form onSubmit={handleSubmit}>
-				    	<h2>Login</h2>
+				    	<h2>Create Account</h2>
 				        <div className="login">
 					        <label htmlFor="username">Username</label>
 					        <input 
