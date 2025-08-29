@@ -11,6 +11,8 @@ import { Menu } from './menu'
 import { TakeQuiz } from './takeQuiz'
 import { Answering } from './answering'
 import { End } from './end'
+import { Send } from './send'
+import { Inbox } from './inbox'
 
 function App() {
 	return(
@@ -29,6 +31,8 @@ function App() {
 					<Route path="/takeQuiz" element={<TakeQuiz/>}/>
 					<Route path="/answering" element={<Answering/>}/>
 					<Route path="/end" element={<End/>}/>
+					<Route path="/send" element={<Send/>}/>
+					<Route path="/inbox" element={<Inbox/>}/>
 				</Routes>
 			</BrowserRouter>
 		</div>

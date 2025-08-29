@@ -44,6 +44,12 @@ class Question(db.Model):
 	answer2 = db.Column(db.String(80))
 	answer3 = db.Column(db.String(80))
 
+class Mail(db.Model):
+	__tablename__ = 'mail'
+	sender = db.Column(db.String(80), primary_key = True)
+	receiver = db.Column(db.String(80), primary_key = True)
+	quiz_name = db.Column(db.String(80), primary_key = True)
+
 @app.route('/login',  methods=['GET', 'POST'])
 def login():
 	# displays the menu screen if the userid and password are valid
@@ -62,11 +68,14 @@ def login():
 @app.route('/createUser',  methods=['GET', 'POST'])
 def createUser():
 	# adds another user to the database
-	data = request.get_json()
-	salt = bcrypt.gensalt()
-	username = data.get('username')
-	password = (data.get('password')).encode("utf-8")
-	hashedPassword = bcrypt.hashpw(password, salt)
+	try:
+		data = request.get_json()
+		salt = bcrypt.gensalt()
+		username = data.get('username')
+		password = (data.get('password')).encode("utf-8")
+		hashedPassword = bcrypt.hashpw(password, salt)
+	except:
+		return {'status':'error','message':'Something went wrong.'}
 	if (username != '' and password != ''):
 		try:
 			newUser = User(username=username, password=hashedPassword.decode('utf-8'))
@@ -82,8 +91,11 @@ def createUser():
 @app.route('/createQuiz',  methods=['GET', 'POST'])
 def createQuiz():
 	# adds another user to the database
-	data = request.get_json()
-	name = data.get('name')
+	try:
+		data = request.get_json()
+		name = data.get('name')
+	except:
+		return {'status':'error','message':'Something went wrong.'}
 	if (name != ''):
 		try:
 			newQuiz = Quiz(quiz_name=name, username=session.get('username'))
@@ -99,14 +111,17 @@ def createQuiz():
 @app.route('/editQuiz',  methods=['GET', 'POST', 'DELETE'])
 def editQuiz():
 	if(request.method == 'GET'):
-		questions = Question.query.filter_by(username=session['username']).filter_by(quiz_name=session['quiz'])
-		question_dicts = [
-			{
-				'name': question.question_name
-			}
-			for question in questions
-		]
-		return {'names': question_dicts}
+		try:
+			questions = Question.query.filter_by(username=session['username']).filter_by(quiz_name=session['quiz'])
+			question_dicts = [
+				{
+					'name': question.question_name
+				}
+				for question in questions
+			]
+			return {'names': question_dicts}
+		except:
+			return {'status':'error','message':'Something went wrong.'}
 	elif(request.method == 'POST'):
 		try:
 			data = request.get_json()
@@ -132,14 +147,17 @@ def editQuiz():
 @app.route('/chooseQuiz',  methods=['GET', 'POST'])
 def chooseQuiz():
 	if(request.method == 'GET'):
-		quizzes = Quiz.query.filter_by(username=session.get('username'))
-		quiz_dicts = [
-			{
-				'name': quiz.quiz_name
-			}
-			for quiz in quizzes
-		]
-		return {'quizzes': quiz_dicts}
+		try:
+			quizzes = Quiz.query.filter_by(username=session.get('username'))
+			quiz_dicts = [
+				{
+					'name': quiz.quiz_name
+				}
+				for quiz in quizzes
+			]
+			return {'quizzes': quiz_dicts}
+		except:
+			return {'status':'error','message':'Something went wrong.'}
 	elif(request.method == 'POST'):
 		try:
 			data = request.get_json()
@@ -153,7 +171,10 @@ def chooseQuiz():
 @app.route('/addQuestion',  methods=['GET', 'POST'])
 def addQuestion():
 	# adds question to the database
-	data = request.get_json()
+	try:
+		data = request.get_json()
+	except:
+		return {'status':'error','message':'Something went wrong.'}
 	if (data.get('questionType') == 'Multiple Choice'):
 		if(data.get('name') != '' and data.get('correctAnswer') != '' and data.get('incorrectAnswer') != '' and data.get('incorrectAnswer2') != '' and data.get('incorrectAnswer3') != ''):
 			try:
@@ -194,11 +215,17 @@ def addQuestion():
 @app.route('/editQuestion',  methods=['GET', 'POST', 'DELETE'])
 def editQuestion():
 	if(request.method == 'GET'):
-		question = Question.query.filter_by(username=session['username'], quiz_name=session['quiz'], question_name=session['question']).one()
-		response = {'name': question.question_name, 'questionType': question.question_type, 'correctAnswer': question.correct_answer, 'incorrectAnswer': question.answer1, 'incorrectAnswer2': question.answer2, 'incorrectAnswer3': question.answer3}
-		return response
+		try:
+			question = Question.query.filter_by(username=session['username'], quiz_name=session['quiz'], question_name=session['question']).one()
+			response = {'name': question.question_name, 'questionType': question.question_type, 'correctAnswer': question.correct_answer, 'incorrectAnswer': question.answer1, 'incorrectAnswer2': question.answer2, 'incorrectAnswer3': question.answer3}
+			return response
+		except:
+			return {'status':'error','message':'Something went wrong.'}
 	elif(request.method == 'POST'):
-		data = request.get_json()
+		try:
+			data = request.get_json()
+		except:
+			return {'status':'error','message':'Something went wrong.'}
 		if (data.get('questionType') == 'Multiple Choice'):
 			if(data.get('name') != '' and data.get('correctAnswer') != '' and data.get('incorrectAnswer') != '' and data.get('incorrectAnswer2') != '' and data.get('incorrectAnswer3') != ''):
 				try:
@@ -245,14 +272,17 @@ def editQuestion():
 @app.route('/takeQuiz',  methods=['GET', 'POST'])
 def takeQuiz():
 	if(request.method == 'GET'):
-		quizzes = Quiz.query.filter_by(username=session.get('username'))
-		quiz_dicts = [
-			{
-				'name': quiz.quiz_name
-			}
-			for quiz in quizzes
-		]
-		return {'quizzes': quiz_dicts}
+		try:
+			quizzes = Quiz.query.filter_by(username=session.get('username'))
+			quiz_dicts = [
+				{
+					'name': quiz.quiz_name
+				}
+				for quiz in quizzes
+			]
+			return {'quizzes': quiz_dicts}
+		except:
+			return {'status':'error','message':'Something went wrong.'}
 	elif(request.method == 'POST'):
 		try:
 			data = request.get_json()
@@ -337,6 +367,99 @@ def End():
 			return {'status': 'error', 'message': 'Something went wrong.'}
 	else:
 		return {'status':'error','message':'Invalid request method.'}
+
+@app.route('/send',  methods=['GET', 'POST'])
+def Send():
+	try:
+		data = request.get_json()
+		receiver = data.get('send',None)
+		quiz_name = data.get('quiz',None)
+		newMail = Mail(sender=session.get('username'), receiver=receiver, quiz_name=quiz_name)
+		db.session.add(newMail)
+		db.session.commit()
+		return {'status':'ok'}
+	except Exception as e:
+		print('error:',e)
+		return {'status':'error','message':'Quiz or User not found.'}
+
+@app.route('/inbox',  methods=['GET', 'POST', 'DELETE'])
+def Inbox():
+	try:
+		mail = Mail.query.filter_by(receiver=session['username']).all()
+	except Exception as e:
+		print(e)
+		return {'status':'error','message':'Something went wrong.'}
+	if(request.method == 'GET'):
+		try:
+			mail_dicts = [
+				{
+					'sender': x.sender,
+					'receiver': x.receiver,
+					'quiz_name': x.quiz_name
+				}
+				for x in mail
+			]
+			response = {'mail': mail_dicts}
+			return response
+		except:
+			return {'status':'error','message':'Something went wrong.'}
+	elif(request.method == 'POST'):
+		try:
+			data = request.get_json()
+			selectedMail = mail[int(data.get('index'))]
+		except:
+			return {'status':'error','message':'Something went wrong.'}
+		try:
+			#adds quiz to account
+			quiz = Quiz.query.filter_by(quiz_name=selectedMail.quiz_name, username=selectedMail.sender).one()
+			newQuiz = Quiz(quiz_name = quiz.quiz_name, username = session['username'])
+			db.session.add(newQuiz)
+
+			#adds questions to account
+			questions = Question.query.filter_by(quiz_name = quiz.quiz_name, username = quiz.username).all()
+			for question in questions:
+				newQuestion = Question(quiz_name = question.quiz_name, username = session['username'], question_name = question.question_name, question_type = question.question_type, correct_answer = question.correct_answer, answer1 = question.answer1, answer2 = question.answer2, answer3 = question.answer3)
+				db.session.add(newQuestion)
+			
+			#delete selected mail
+			db.session.delete(selectedMail)
+			db.session.commit()
+			mail = Mail.query.filter_by(receiver=session['username']).all()
+			mail_dicts = [
+				{
+					'sender': x.sender,
+					'receiver': x.receiver,
+					'quiz_name': x.quiz_name
+				}
+				for x in mail
+			]
+			return {'status':'ok','mail':mail_dicts}
+		except Exception as e:
+			print(e)
+			return {'status':'error','message':'Quiz with that name already exists.'}
+	elif(request.method == 'DELETE'):
+		try:
+			data = request.get_json()
+			selectedMail = mail[int(data.get('index'))]
+		except Exception as e:
+			print(e)
+			return {'status':'error','message':'Something went wrong.'}
+		try:
+			#delete selected mail
+			db.session.delete(selectedMail)
+			db.session.commit()
+			mail = Mail.query.filter_by(receiver=session['username']).all()
+			mail_dicts = [
+				{
+					'sender': x.sender,
+					'receiver': x.receiver,
+					'quiz_name': x.quiz_name
+				}
+				for x in mail
+			]
+			return {'status':'ok','mail':mail_dicts}
+		except:
+			return {'status':'error','message':'Quiz with that name already exists.'}
 
 def isValid(username, password):
 	if(username != None):

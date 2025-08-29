@@ -148,6 +148,19 @@ p {
     color:oldlace;
 }
 
+.inbox
+{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.inbox button
+{
+    display: inline-block;
+    margin-right: 10px;
+}
+
 .login 
 {
     display: block;

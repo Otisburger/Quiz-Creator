@@ -24,6 +24,14 @@ export function Menu(){
 		navigate('/login')
 	};
 
+	const handleSend = () => {
+		navigate('/send')
+	};
+
+	const handleInbox = () => {
+		navigate('/inbox')
+	};
+
 	return (
 	<div className="App">
 		<h1>Quiz!</h1>
@@ -37,6 +45,12 @@ export function Menu(){
 			</button>
 			<button type="button" onClick={handleEdit} className="submit">
 				Edit a Quiz
+			</button>
+			<button type="button" onClick={handleSend} className="submit">
+				Send a Quiz
+			</button>
+			<button type="button" onClick={handleInbox} className="submit">
+				Inbox
 			</button>
 			<button type="button" onClick={handleLogin} className="submit">
 				Back to Login
