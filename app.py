@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import request
 from flask import session
+from flask import jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from flask_cors import CORS
@@ -11,7 +12,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:3000"], supports_credentials=True)
+CORS(app, supports_credentials=True, resources={r"/*": {"origins": "http://127.0.0.1:3000"}})
 
 app.config['SQLALCHEMY_DATABASE_URI']=os.getenv("SQLALCHEMY_DATABASE_URI")
 app.config['SECRET_KEY']=os.getenv("SECRET_KEY")
@@ -50,6 +51,10 @@ class Mail(db.Model):
 	receiver = db.Column(db.String(80), primary_key = True)
 	quiz_name = db.Column(db.String(80), primary_key = True)
 
+@app.before_request
+def log_request():
+    print("Incoming:", request.method, request.path)
+
 @app.route('/login',  methods=['GET', 'POST'])
 def login():
 	# displays the menu screen if the userid and password are valid
@@ -70,23 +75,25 @@ def createUser():
 	# adds another user to the database
 	try:
 		data = request.get_json()
+		print("Received data:", data)
 		salt = bcrypt.gensalt()
 		username = data.get('username')
 		password = (data.get('password')).encode("utf-8")
 		hashedPassword = bcrypt.hashpw(password, salt)
-	except:
-		return {'status':'error','message':'Something went wrong.'}
+	except Exception as e:
+		print("Error in createUser:", e)
+		return jsonify({'status': 'error', 'message': 'Something went wrong.'})
 	if (username != '' and password != ''):
 		try:
 			newUser = User(username=username, password=hashedPassword.decode('utf-8'))
 			db.session.add(newUser)
 			db.session.commit()
-			return {'status':'ok'}
+			return jsonify({'status': 'ok'})
 		except Exception as e:
 			print(e)
-			return {'status':'error','message':'A user with that username already exists.'}
+			return jsonify({'status':'error','message':'A user with that username already exists.'})
 	else:
-		return {'status':'error','message':'One of the fields are blank.'}
+		return jsonify({'status':'error','message':'One of the fields are blank.'})
 
 @app.route('/createQuiz',  methods=['GET', 'POST'])
 def createQuiz():
@@ -102,7 +109,7 @@ def createQuiz():
 			db.session.add(newQuiz)
 			db.session.commit()
 			session['quiz'] = name
-			return {'status':'ok'}
+			return jsonify({'status': 'ok'})
 		except:
 			return {'status':'error','message':'You have already created a quiz with that name.'}
 	else:
@@ -474,4 +481,4 @@ def isValid(username, password):
 if __name__ == "__main__":
 	with app.app_context():
 		db.create_all()
-	app.run(debug=True)
+	app.run(host="0.0.0.0", port=5000, debug=True)
