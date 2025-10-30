@@ -49,7 +49,7 @@ pipeline {
 
   post {
     success {
-      echo "✅ Deployed frontend and backend version ${IMAGE_TAG} to Kubernetes"
+      echo "✅ Deployed frontend and backend version latest to Kubernetes"
     }
     failure {
       echo "❌ Deployment failed. Check logs above."
