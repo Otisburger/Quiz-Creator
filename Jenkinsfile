@@ -35,10 +35,11 @@ pipeline {
     stage('Deploy to Kubernetes') {
       steps {
         script {
-          bat """
-            kubectl set image deployment/frontend frontend=cotoole2/react-frontend:latest --namespace=default
-            kubectl set image deployment/backend backend=cotoole2/flask-backend:latest --namespace=default
-          """
+            withCredentials([file(credentialsId: 'minikube-kubeconfig', variable: 'KUBECONFIG')]) {
+                bat 'kubectl get pods --namespace=default'
+                bat 'kubectl set image deployment/frontend frontend=cotoole2/react-frontend:latest --namespace=default'
+                bat 'kubectl set image deployment/backend backend=cotoole2/flask-backend:latest --namespace=default'
+            }
         }
       }
     }
