@@ -16,7 +16,7 @@ pipeline {
       steps {
         script {
             docker.build('cotoole2/react-frontend:latest', 'frontend/')
-            docker.build('cotoole2/flask-backend:latest', '/')
+            docker.build('cotoole2/flask-backend:latest', '.')
         }
       }
     }
