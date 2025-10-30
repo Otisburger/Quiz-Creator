@@ -35,7 +35,7 @@ pipeline {
     stage('Deploy to Kubernetes') {
       steps {
         script {
-          sh """
+          bat """
             kubectl set image deployment/frontend frontend=cotoole2/react-frontend:latest --namespace=default
             kubectl set image deployment/backend backend=cotoole2/flask-backend:latest --namespace=default
           """
