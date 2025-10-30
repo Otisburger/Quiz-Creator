@@ -37,8 +37,8 @@ pipeline {
         script {
             withCredentials([file(credentialsId: 'minikube-kubeconfig', variable: 'KUBECONFIG')]) {
                 bat 'kubectl get pods --namespace=default'
-                bat 'kubectl apply -f k8s/frontend-deployment.yaml'
-                bat 'kubectl apply -f k8s/backend-deployment.yaml'
+                bat 'kubectl apply -f frontend-deployment.yaml'
+                bat 'kubectl apply -f backend-deployment.yaml'
                 bat 'kubectl set image deployment/frontend frontend=cotoole2/react-frontend:latest --namespace=default'
                 bat 'kubectl set image deployment/backend backend=cotoole2/flask-backend:latest --namespace=default'
             }
