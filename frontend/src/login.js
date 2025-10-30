@@ -3,7 +3,7 @@ import axios from "axios";
 import {useNavigate} from 'react-router-dom';
 import './App.css';
 
-const baseUrl = "http://127.0.0.1:5000"
+const baseUrl = '${process.env.REACT_APP_API_BASE_URL}'
 
 export function Login(){
 
