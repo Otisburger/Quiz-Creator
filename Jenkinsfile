@@ -24,7 +24,7 @@ pipeline {
     stage('Push Images') {
       steps {
         script {
-          docker.withRegistry("docker.io/cotoole2", 'dockerhub-creds'){
+          docker.withRegistry("https://index.docker.io/v1/", 'dockerhub-creds'){
             docker.image("cotoole2/react-frontend:latest").push()
             docker.image("cotoole2/flask-backend:latest").push()
           }
