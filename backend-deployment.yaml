@@ -35,17 +35,17 @@ spec:
         - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
-              name: secrets
+              name: postgres-secret
               key: username
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: secrets
+              name: postgres-secret
               key: password
         - name: POSTGRES_DB
           valueFrom:
             secretKeyRef:
-              name: secrets
+              name: postgres-secret
               key: database
         resources:
           requests:
