@@ -1,6 +1,7 @@
 # Created by venv; see https://docs.python.org/3/library/venv.html
 *
 .env
+secrets.yaml
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 

@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  selector:
+    app: backend
+  ports:
+  - port: 5000
+    targetPort: 5000
+  type: ClusterIP
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: cotoole2/flask-backend:latest
+        ports:
+        - containerPort: 5000
+    env:
+    - name: DATABASE_URL
+      value: postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)
+    - name: POSTGRES_USER
+      valueFrom:
+        secretKeyRef:
+          name: secrets
+          key: username
+    - name: POSTGRES_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: secrets
+          key: password
+    - name: POSTGRES_DB
+      valueFrom:
+        secretKeyRef:
+          name: secrets
+          key: database
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "128Mi"
+      limits:
+        cpu: "250m"
+        memory: "256Mi"
