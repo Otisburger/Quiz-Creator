@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        python 'Python-3.11'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -11,11 +15,11 @@ pipeline {
         stage('Run Pytest') {
             steps {
                 bat '''
-                    py -m venv venv
+                    python -m venv venv
                     call venv\\Scripts\\activate
-                    py -m pip install --upgrade pip
-                    py -m pip install -r requirements.txt
-                    py -m pytest tests --maxfail=1 --disable-warnings -q
+                    python -m pip install --upgrade pip
+                    python -m pip install -r requirements.txt
+                    python -m pytest tests --maxfail=1 --disable-warnings -q
                 '''
             }
         }
