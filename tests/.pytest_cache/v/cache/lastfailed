@@ -1,0 +1,5 @@
+{
+  "test_.py::test_editQuiz_invalid_request_method": true,
+  "test_.py::test_answering_get_done": true,
+  "test_.py::test_send_duplicate": true
+}

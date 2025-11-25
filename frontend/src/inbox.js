@@ -29,6 +29,7 @@ export function Inbox(){
         try {
         	const response = await axios.post(baseUrl+'/inbox', formData, { withCredentials: true });
 			if(response.data['status'] === 'error'){
+				setMail(response.data.mail);
 				alert(response.data['message']);
 			}
 			else{
