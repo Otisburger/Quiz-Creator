@@ -10,7 +10,7 @@ pipeline {
 
         stage('Run Pytest') {
             steps {
-                sh '''
+                bat '''
                     python3 -m venv venv
                     . venv/bin/activate
                     pip install -r requirements.txt
@@ -21,7 +21,7 @@ pipeline {
 
         stage('Run Docker Compose') {
             steps {
-                sh '''
+                bat '''
                     docker-compose -f docker-compose.yml up -d --build
                 '''
             }
@@ -30,7 +30,7 @@ pipeline {
 
     post {
         always {
-            sh 'docker-compose -f docker-compose.yml down'
+            bat 'docker-compose -f docker-compose.yml down'
         }
         success {
             echo 'Pipeline completed successfully!'
