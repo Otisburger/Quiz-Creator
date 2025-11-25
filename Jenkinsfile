@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        jenkins.plugins.shiningpanda.tools.PythonInstallation 'Python-3.11'
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -15,11 +11,11 @@ pipeline {
         stage('Run Pytest') {
             steps {
                 bat '''
-                    python -m venv venv
+                    "C:\\Users\\colin\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m venv venv
                     call venv\\Scripts\\activate
-                    python -m pip install --upgrade pip
-                    python -m pip install -r requirements.txt
-                    python -m pytest tests --maxfail=1 --disable-warnings -q
+                    "C:\\Users\\colin\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m pip install --upgrade pip
+                    "C:\\Users\\colin\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m pip install -r requirements.txt
+                    "C:\\Users\\colin\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m pytest tests --maxfail=1 --disable-warnings -q
                 '''
             }
         }
