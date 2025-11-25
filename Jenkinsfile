@@ -11,11 +11,11 @@ pipeline {
         stage('Run Pytest') {
             steps {
                 bat '''
-                    python -m venv venv
+                    py -m venv venv
                     call venv\\Scripts\\activate
-                    python -m pip install --upgrade pip
-                    python -m pip install -r requirements.txt
-                    python -m pytest tests --maxfail=1 --disable-warnings -q
+                    py -m pip install --upgrade pip
+                    py -m pip install -r requirements.txt
+                    py -m pytest tests --maxfail=1 --disable-warnings -q
                 '''
             }
         }
