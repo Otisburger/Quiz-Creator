@@ -7,4 +7,4 @@ RUN pip install Flask requests Flask-Session Flask-Cors Flask-SQLAlchemy python-
 
 EXPOSE 5000
 
-CMD [ "python", "./app.py" ]
+CMD ["python", "-u", "app.py"]

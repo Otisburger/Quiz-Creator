@@ -2,6 +2,11 @@ import os
 import pytest
 from app import create_app, db, User, Quiz, Question, Mail
 import bcrypt
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 @pytest.fixture(scope="session")
 def app():
@@ -18,6 +23,13 @@ def app():
 @pytest.fixture(scope="function")
 def client(app):
     return app.test_client()
+
+@pytest.fixture(scope="session")
+def driver():
+    service = Service(r"C:\Users\colin\Desktop\chromedriver-win64\chromedriver.exe")
+    driver = webdriver.Chrome(service=service)
+    yield driver
+    driver.quit()
 
 @pytest.fixture(scope="function")
 def init_data(app):

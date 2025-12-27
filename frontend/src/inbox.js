@@ -3,7 +3,7 @@ import axios from "axios";
 import {useNavigate} from 'react-router-dom';
 import './App.css';
 
-const baseUrl = "http://127.0.0.1:5000"
+const baseUrl = process.env.REACT_APP_BASEURL
 
 export function Inbox(){
 
@@ -93,7 +93,7 @@ export function Inbox(){
 					</>
 					</div>
 				))}
-			<button type="button" onClick={menuRedirect} className="submit">
+			<button type="button" onClick={menuRedirect} className="submit" id="menu">
 				Back to Menu
 			</button>
 		</div>
