@@ -52,6 +52,11 @@ def test_create_account_successful(driver, client, init_data):
         EC.element_to_be_clickable((By.ID, "create"))
     )
     input_element.click()
+    h2 = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located(
+            (By.XPATH, "//h2[normalize-space()='Create Account']")
+        )
+    )
     input_element = WebDriverWait(driver, 5).until(
         EC.presence_of_element_located((By.ID, "username"))
     )
@@ -75,6 +80,11 @@ def test_create_account_already_exists(driver, client, init_data):
         EC.element_to_be_clickable((By.ID, "create"))
     )
     input_element.click()
+    h2 = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located(
+            (By.XPATH, "//h2[normalize-space()='Create Account']")
+        )
+    )
     input_element = WebDriverWait(driver, 5).until(
         EC.presence_of_element_located((By.ID, "username"))
     )
@@ -97,6 +107,11 @@ def test_create_account_blank_user(driver, client, init_data):
         EC.element_to_be_clickable((By.ID, "create"))
     )
     input_element.click()
+    h2 = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located(
+            (By.XPATH, "//h2[normalize-space()='Create Account']")
+        )
+    )
     input_element = WebDriverWait(driver, 5).until(
         EC.presence_of_element_located((By.ID, "username"))
     )
@@ -119,6 +134,11 @@ def test_create_account_blank_pass(driver, client, init_data):
         EC.element_to_be_clickable((By.ID, "create"))
     )
     input_element.click()
+    h2 = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located(
+            (By.XPATH, "//h2[normalize-space()='Create Account']")
+        )
+    )
     input_element = WebDriverWait(driver, 5).until(
         EC.presence_of_element_located((By.ID, "username"))
     )
