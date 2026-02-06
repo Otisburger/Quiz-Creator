@@ -110,7 +110,7 @@ def create_app(test: bool = False):
 	load_dotenv()
 
 	app = Flask(__name__)
-	CORS(app, supports_credentials=True, resources={r"/*": {"origins": ["http://127.0.0.1:3000", 'http://127.0.0.1:3001']}})
+	CORS(app, supports_credentials=True, resources={r"/*": {"origins": ["http://127.0.0.1:3000", 'http://127.0.0.1:3001', "http://localhost:3001", "http://pipeline-frontend-test-1:3000"]}})
 
 	if test:
 		app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SQLALCHEMY_DATABASE_URI_PYTEST")
