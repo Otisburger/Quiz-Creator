@@ -19,7 +19,7 @@ def test_login_successful(driver, client, init_data):
     )
     input_element.send_keys("123")
     submit_btn = WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.XPATH, "/html/body/div/div/div/div/form/input"))
+        EC.element_to_be_clickable((By.ID, "button"))
     )
     submit_btn.click()
     assert WebDriverWait(driver, 10).until(
@@ -37,7 +37,7 @@ def test_login_invalid_user(driver, client, init_data):
     )
     input_element.send_keys("123")
     submit_btn = WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.XPATH, "/html/body/div/div/div/div/form/input"))
+        EC.element_to_be_clickable((By.ID, "button"))
     )
     submit_btn.click()
     alert = WebDriverWait(driver, 5).until(EC.alert_is_present())
