@@ -1,5 +1,20 @@
 {
   "test_.py::test_editQuiz_invalid_request_method": true,
   "test_.py::test_answering_get_done": true,
-  "test_.py::test_send_duplicate": true
+  "test_.py::test_send_duplicate": true,
+  "test_.py::test_create_quiz": true,
+  "test_.py::test_send_quiz": true,
+  "test_.py::test_inbox": true,
+  "test_selenium.py::test_create_account_successful": true,
+  "test_selenium.py::test_create_account_already_exists": true,
+  "test_selenium.py::test_create_account_blank_user": true,
+  "test_selenium.py::test_create_account_blank_pass": true,
+  "test_selenium.py::test_create_quiz_successful": true,
+  "test_selenium.py::test_edit_quiz_successful": true,
+  "test_selenium.py::test_delete_question": true,
+  "test_selenium.py::test_delete_quiz": true,
+  "test_selenium.py::test_send_quiz_successful": true,
+  "test_selenium.py::test_inbox_successful": true,
+  "test_selenium.py::test_inbox_duplicate_quiz": true,
+  "test_selenium.py::test_inbox_delete": true
 }

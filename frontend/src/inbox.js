@@ -25,7 +25,7 @@ export function Inbox(){
 
 	const handleAccept = async (event) => {
 		event.preventDefault();
-        const formData = { index: event.target.name };
+        const formData = { index: event.target.id };
         try {
         	const response = await axios.post(baseUrl+'/inbox', formData, { withCredentials: true });
 			if(response.data['status'] === 'error'){
@@ -43,7 +43,7 @@ export function Inbox(){
 
 	const handleDeny = async (event) => {
 		event.preventDefault();
-        const formData = { index: event.target.name };
+        const formData = { index: event.target.id };
         try {
         	const response = await axios.delete(baseUrl + '/inbox', { data: formData, withCredentials: true });
 			if(response.data['status'] === 'error'){
@@ -78,14 +78,16 @@ export function Inbox(){
 					/>
 					<input
 						type="button"
-						name={index}
+						id={index}
+						name={item['quiz_name']}
 						value='Accept'
 						className="submit"
 						onClick = {handleAccept}
 					/>
 					<input
 						type="button"
-						name={index}
+						id={index}
+						name={item['quiz_name']}
 						value='Deny'
 						className="submit"
 						onClick = {handleDeny}

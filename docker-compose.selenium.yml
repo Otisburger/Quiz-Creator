@@ -1,18 +1,18 @@
 version: '3.8'
 
 services:
-  frontend:
+  frontend-test:
     environment:
       REACT_APP_BASEURL: 'http://127.0.0.1:5001'
     build: ./frontend
     ports:
       - "3001:3000"
     depends_on:
-      - backend
+      - backend-test
     networks:
-      - app-network
+      - app-network-test
 
-  backend:
+  backend-test:
     environment:
       TEST: '1'
     build: ./
@@ -21,12 +21,12 @@ services:
     env_file:
       - .env
     depends_on:
-      db:
+      db-test:
         condition: service_healthy
     networks:
-      - app-network
+      - app-network-test
 
-  db:
+  db-test:
     image: postgres:latest
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -34,9 +34,11 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-      - pgdata:/var/lib/postgresql/18/docker
+      - pgdata-test:/var/lib/postgresql/18/docker
+    ports:
+      - "5433:5432"
     networks:
-      - app-network
+      - app-network-test
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
       interval: 10s
@@ -44,8 +46,8 @@ services:
       retries: 5
 
 volumes:
-  pgdata:
+  pgdata-test:
 
 networks:
-  app-network:
+  app-network-test:
     driver: bridge

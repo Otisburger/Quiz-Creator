@@ -12,6 +12,7 @@ from selenium.webdriver.support import expected_conditions as EC
 def app():
     app = create_app(True)
     app.config['TESTING'] = True
+    print("PYTEST DB:", app.config["SQLALCHEMY_DATABASE_URI"])
 
     with app.app_context():
         db.create_all()

@@ -9,20 +9,11 @@ from flask_cors import CORS
 import bcrypt
 from sqlalchemy.engine import Engine
 import sqlite3
-
 import os
 from dotenv import load_dotenv
 
 db = SQLAlchemy()
 sess = Session()
-
-# Enable foreign key enforcement for SQLite
-@event.listens_for(Engine, "connect")
-def set_sqlite_pragma(dbapi_connection, connection_record):
-    if dbapi_connection.__class__.__module__.startswith("sqlite3"):
-        cursor = dbapi_connection.cursor()
-        cursor.execute("PRAGMA foreign_keys=ON;")
-        cursor.close()
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -121,8 +112,10 @@ def create_app(test: bool = False):
 	app = Flask(__name__)
 	CORS(app, supports_credentials=True, resources={r"/*": {"origins": ["http://127.0.0.1:3000", 'http://127.0.0.1:3001']}})
 
-	if test or os.getenv("TEST") == '1':
-		app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///:memory:"
+	if test:
+		app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SQLALCHEMY_DATABASE_URI_PYTEST")
+	elif os.getenv("TEST") == '1':
+		app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SQLALCHEMY_DATABASE_URI_TEST")
 	else:
 		app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SQLALCHEMY_DATABASE_URI")
 	
@@ -174,6 +167,7 @@ def create_app(test: bool = False):
 				return jsonify({'status': 'ok'})
 			except Exception as e:
 				print(e)
+				db.session.rollback()
 				return jsonify({'status':'error','message':'A user with that username already exists.'})
 		else:
 			return jsonify({'status':'error','message':'One of the fields are blank.'})
@@ -194,6 +188,7 @@ def create_app(test: bool = False):
 				session['quiz'] = name
 				return jsonify({'status': 'ok'})
 			except:
+				db.session.rollback()
 				return {'status':'error','message':'You have already created a quiz with that name.'}
 		else:
 			return {'status':'error','message':'One of the fields are blank.'}
@@ -230,6 +225,7 @@ def create_app(test: bool = False):
 				db.session.commit()
 				return {'status':'ok'}
 			except:
+				db.session.rollback()
 				return {'status': 'error', 'message': 'Something went wrong.'}
 		else:
 			return {'status':'error','message':'Invalid request method.'}
@@ -274,6 +270,7 @@ def create_app(test: bool = False):
 					return {'status':'ok'}
 				except Exception as e:
 					print('error', e)
+					db.session.rollback()
 					return {'status':'error','message':'You have already added a question with that name.'}
 			else:
 				return {'status':'error','message':'One of the fields are blank.'}
@@ -285,6 +282,7 @@ def create_app(test: bool = False):
 					db.session.commit()
 					return {'status':'ok'}
 				except:
+					db.session.rollback()
 					return {'status':'error','message':'You have already added a question with that name.'}
 			else:
 				return {'status':'error','message':'One of the fields are blank.'}
@@ -296,6 +294,7 @@ def create_app(test: bool = False):
 					db.session.commit()
 					return {'status':'ok'}
 				except:
+					db.session.rollback()
 					return {'status':'error','message':'You have already added a question with that name.'}
 			else:
 				return {'status':'error','message':'One of the fields are blank.'}
@@ -323,6 +322,7 @@ def create_app(test: bool = False):
 						db.session.commit()
 						return {'status':'ok'}
 					except:
+						db.session.rollback()
 						return {'status':'error','message':'You have already added a question with that name.'}
 				else:
 					return {'status':'error','message':'One of the fields are blank.'}
@@ -333,6 +333,7 @@ def create_app(test: bool = False):
 						db.session.commit()
 						return {'status':'ok'}
 					except:
+						db.session.rollback()
 						return {'status':'error','message':'You have already added a question with that name.'}
 				else:
 					return {'status':'error','message':'One of the fields are blank.'}
@@ -343,6 +344,7 @@ def create_app(test: bool = False):
 						db.session.commit()
 						return {'status':'ok'}
 					except:
+						db.session.rollback()
 						return {'status':'error','message':'You have already added a question with that name.'}
 				else:
 					return {'status':'error','message':'One of the fields are blank.'}
@@ -355,6 +357,7 @@ def create_app(test: bool = False):
 				db.session.commit()
 				return {'status':'ok'}
 			except:
+				db.session.rollback()
 				return {'status': 'error', 'message': 'Something went wrong.'}
 		else:
 			return {'status':'error','message':'Invalid request method.'}
@@ -470,6 +473,7 @@ def create_app(test: bool = False):
 			return {'status':'ok'}
 		except Exception as e:
 			print('error:',e)
+			db.session.rollback()
 			return {'status':'error','message':'Quiz or User not found.'}
 
 	@app.route('/inbox',  methods=['GET', 'POST', 'DELETE'])
@@ -527,6 +531,7 @@ def create_app(test: bool = False):
 				return {'status':'ok','mail':mail_dicts}
 			except Exception as e:
 				print(e)
+				db.session.rollback()
 				return {'status':'error','message':'Quiz with that name already exists.','mail':mail_dicts}
 		elif(request.method == 'DELETE'):
 			try:
@@ -550,11 +555,12 @@ def create_app(test: bool = False):
 				db.session.commit()
 				return {'status':'ok','mail':mail_dicts}
 			except:
+				db.session.rollback()
 				return {'status':'error','message':'Something went wrong.'}
 
 	def isValid(username, password):
 		if(username != None):
-			user = User.query.filter_by(username=username).one()
+			user = User.query.filter_by(username=username).first()
 		else:
 			user = None
 		if (user is not None) and bcrypt.checkpw(password.encode("utf-8"), (user.password).encode("utf-8")): # returns true if the information entered matches a user in the database

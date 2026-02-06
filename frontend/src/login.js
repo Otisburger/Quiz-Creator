@@ -74,7 +74,7 @@ export function Login(){
 							className="submit"
 						/>
 			    	</form>
-			    	<button type="button" onClick={handleRedirect} className="submit">
+			    	<button id="create" type="button" onClick={handleRedirect} className="submit">
 						Create Account
 					</button>
 		    	</div>
